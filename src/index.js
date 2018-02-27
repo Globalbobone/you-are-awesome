@@ -8,7 +8,7 @@ const createNotEnumerableProperty = (prop) => {
   Object.defineProperty(Object.prototype, prop, {
     enumerable: false,
     value: 'value'
-});
+  });
   return prop;
 };
 
@@ -32,24 +32,51 @@ const asyncIncrementor = () => {
   return new Promise((resolve, reject) => {
     asyncCount++;
     return resolve(asyncCount);
-    })
+  })
 };
 
-const createIncrementer = (a) => {
-  return a++;
-};
+const createIncrementer = () => {
+  return {
+    i: 0,
+    next() {
+      return {value: ++this.i}
+    },
+    [Symbol.iterator]() {
+      return {
+        next: () => {
+          return this.next()
+        },
+      };
+    },
+  };
+}
 
 // return same argument not earlier than in one second, and not later, than in two
 
-const returnBackInSecond = () => {};
-const getDeepPropertiesCount = () => {};
+const returnBackInSecond = (res) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(function () {
+      resolve(res)}, 1200);
+  });
+};
+
+const getDeepPropertiesCount = (obj) => {
+  let props = Object.getOwnPropertyNames(obj);
+  let res = props.length;
+  props.forEach(property => {
+    if (Object.getOwnPropertyNames(obj[property]).length > 0){
+      res += getDeepPropertiesCount(obj[property]);
+    }
+  })
+  return res;
+};
 
 const createSerializedObject = () => {
   return null;
 };
 
-const toBuffer = () => {};
 const sortByProto = () => {};
+
 
 exports.createEnumerableProperty = createEnumerableProperty;
 exports.createNotEnumerableProperty = createNotEnumerableProperty;
