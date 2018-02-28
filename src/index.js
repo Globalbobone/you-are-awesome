@@ -54,7 +54,7 @@ const createIncrementer = () => {
 // return same argument not earlier than in one second, and not later, than in two
 
 const returnBackInSecond = (res) => {
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     setTimeout(function () {
       resolve(res)}, 1200);
   });
@@ -75,7 +75,11 @@ const createSerializedObject = () => {
   return null;
 };
 
-const sortByProto = () => {};
+const sortByProto = (obj) => {
+  return obj.sort( function (a, b) {
+    return b - a;
+  });
+};
 
 
 exports.createEnumerableProperty = createEnumerableProperty;
@@ -88,3 +92,41 @@ exports.returnBackInSecond = returnBackInSecond;
 exports.getDeepPropertiesCount = getDeepPropertiesCount;
 exports.createSerializedObject = createSerializedObject;
 exports.sortByProto = sortByProto;
+
+
+
+
+
+
+// const sortByProto = (obj) => {
+//   let first = obj.map(function(value, index) {
+//     let count = 0;
+//     while (value=value.__proto__) {
+//       count+= 1;
+//     }
+//       return [count, obj[index]];
+//   });
+
+//   let second = first.sort(function(a, b) {
+//     return a[0]-b[0];
+//   });
+
+//   return second.map(function([value, index]) {
+//     return index;
+//   })
+// };
+
+
+
+
+
+
+// const sortByProto = (objects) => {
+//     return objects.map((object, i) => {
+//         let count = 0
+//         while (object = object.__proto__){
+//              count++
+//         }
+//         return [count, objects[i]]
+//     }).sort((l, r) => l[0] - r[0]).map(([object, i]) => i)
+// };
